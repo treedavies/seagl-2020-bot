@@ -447,12 +447,34 @@ class Database:
             nick -- string: irc handle
             lst -- string: name of topic list 
         """
+
         lst = lst + '_list'
+        rtn = False
+        table_exists = True 
 
-        #
-        # CHECK IF TABLE EXISTS, IF NOT IS nick IN botopss
-        #
+        """ Check if table exists """
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=\'" + lst + "\';")
+            rows = cursor.fetchall()
+            if len(rows) < 1:
+                table_exists = False
+        except Exception as e:
+            logging.error("ERROR: join_topic(): "+str(e))
+            cursor.close()
+            return
+        cursor.close()
 
+
+        """ Check if user is in botops"""
+        if not table_exists:
+            try:
+                config.botops.index(nick)
+            except Exception as e:
+                return "Topic list creation Not permitted"
+
+
+        """ Create table """
         try:
             cursor = self.connection.cursor()
             create_table = "CREATE TABLE IF NOT EXISTS "+lst+" (id INTEGER PRIMARY KEY ASC, user_id TEXT, Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP);"
@@ -461,6 +483,8 @@ class Database:
             logging.error("join_topic(): '"+ create_table + "'" + str(e))
         cursor.close()
 
+
+        """ Check if user is already in list """
         try:
             cursor = self.connection.cursor()
             cursor.execute("SELECT user_id FROM "+lst+" WHERE user_id=?", (nick,))
@@ -471,6 +495,8 @@ class Database:
             logging.error("join_topic(): '"+ query + "'" + str(e)) 
         cursor.close()
 
+
+        """ Add nick to list  """
         try:
             cursor = self.connection.cursor()
             qry = "INSERT INTO " + lst + " (user_id) VALUES (?)"
