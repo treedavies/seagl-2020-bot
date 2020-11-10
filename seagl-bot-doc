@@ -52,3 +52,6 @@
   equal sized lists, and create a channel/room for each list created.
   Example: !shuffle <list-name> 5
 
+* !timer - Set an alarm timer. Required argument <minutes>
+  Example: !timer 2
+
