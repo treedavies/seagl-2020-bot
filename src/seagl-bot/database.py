@@ -366,7 +366,6 @@ class Database:
     def get_channel_row(self, row):
         rtn = ""
         rid = int(row)-1
-        logging.info("getting id: "+ str(rid))
         try:
             cursor = self.connection.cursor()
             query = "SELECT irc_channel FROM rooms"

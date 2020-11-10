@@ -595,12 +595,12 @@ class IRCProtocol(irc.IRCClient):
         except Exception as e:
             logging.error("Error: rc_RPL_NAMREPLY(): " + str(e))
 
-        logging.info('Info: rc_RPL_NAMREPLY(): %s, %s' % (nicklist, channel))
+        #logging.info('Info: rc_RPL_NAMREPLY(): %s, %s' % (nicklist, channel))
         return
 
 
-    def irc_RPL_ENDOFNAMES(self, prefix, params):
-        logging.info("INFO: irc_RPL_ENDOFNAMES")
+    #def irc_RPL_ENDOFNAMES(self, prefix, params):
+    #    logging.info("INFO: irc_RPL_ENDOFNAMES")
 
 
     #def irc_unknown(self, prefix, command, params):
