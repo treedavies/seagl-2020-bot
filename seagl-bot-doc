@@ -1,0 +1,54 @@
+
+=== Attendee Commands (Visible via !help) ===
+
+* !schedule -  Return URL to seagl2020 track schedule
+
+* !createroom - !cr: Creates an irc channel and room. Required room-name as argument.
+  Example: !cr <room-name>
+
+* !listrooms - !lr: Provides list of rooms. Takes optional [page-number] as argument.
+  Example: !lr [page-num]
+
+* !jointopic - !jt: Adds user nick to a topic list. Requires <topic-name> as argument.
+  User can not create lists.
+  Example: !jt IloveLinux
+
+* !listtopics - !lt : Return list of topics. No argument required.
+
+* !teagl (!tea): Sends a Tea Toast and random quote to a another user.
+  Example: !tea Linus
+
+* !ask -  Send Conference Speaker a question
+  Example: !ask how does XYZ work?
+
+
+=== Admin Commands (allowed for nick in config.botops list) ===
+
+* !questions - Required question number as argument.
+  Example: !question 3
+
+* !clear_question_list - Delete all questions asked to the channel. No 
+  argument required. Only Bot Operaters can do this.
+  Example: !clear_question_list
+
+* !joinlist - !jt: Adds user nick to topic list. Requires <topic-name>
+  Bot opperaters can use this to create lists if they do not exist.
+  Attendees can only join lists that already exist.
+  Example: !jt IloveLinux 
+
+* !admin_announce - !AA: Send Announcement to Admin channels defined in config.channels_admin list.
+  The message is added to a message queue, where messages are read an sent out every N seconds.
+  Example: !AA Free Beer!
+
+* !conf_announce - !CA: Send Announcement to all channels managed by the bot.
+  The message is added to a message queue, where messages are read an sent out.
+  Example: !CA Join us in #seagl-teagl for tea.
+
+* !list_announce - !LA: Send Announcement to all users of a topic list. 
+  The message is added to a message queue, where messages are read an sent out.
+  Example: !LA Ready for trivia?
+
+* !shuffle - : Shuffles the users of a topic list, and distributes them into
+  equal sized lists, and create a channel/room for each list created.
+  Example: !shuffle <list-name> 5
+
