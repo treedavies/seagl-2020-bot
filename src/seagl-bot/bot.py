@@ -128,6 +128,7 @@ class IRCProtocol(irc.IRCClient):
 
 
     def command_help(self, nick, channel, rest):
+        logging.info("CMD: help")
         self.cl.log_chan("seagl-bot", channel, HELP)
         return HELP
 
@@ -154,6 +155,7 @@ class IRCProtocol(irc.IRCClient):
 
 
     def command_schedule(self, nick, channel, rest):
+        logging.info("CMD: command_schedule")
         return "https://osem.seagl.org/conferences/seagl2020/schedule#2020-11-13"
         #       https://osem.seagl.org/conferences/seagl2020/schedule#2020-11-14
     command_sched = command_schedule
@@ -169,6 +171,7 @@ class IRCProtocol(irc.IRCClient):
             rest -- string: input from user
         """
 
+        logging.info("CMD: command_conf_announce")
         if not nick in config.botops:
             return "Operation not permitted user."
 
@@ -201,6 +204,7 @@ class IRCProtocol(irc.IRCClient):
             rest -- string: input from user
         """
 
+        logging.info("CMD: command_admin_announce")
         if not nick in config.botops:
             return "Operation not permitted user."
 
@@ -233,6 +237,7 @@ class IRCProtocol(irc.IRCClient):
             rest -- string: input from user
         """
 
+        logging.info("CMD: command_list_announce")
         if not nick in config.botops:
             return "Operation not permitted user."
 
@@ -273,7 +278,8 @@ class IRCProtocol(irc.IRCClient):
             channel -- string: channel
             rest -- string: input from user
         """
-    
+
+        logging.info("CMD: command_jointopic")
         topic = rest
         for c in [" ","'", "\"", ";", "*"]:
             topic = topic.replace(c, "")
@@ -301,6 +307,8 @@ class IRCProtocol(irc.IRCClient):
             rest -- string: input from user
         """
 
+        logging.info("CMD: command_topicsubs")
+
         """ Sanitize """
         topic = rest
         for c in [" ", "'", "\"", ";", "*",]:
@@ -324,6 +332,8 @@ class IRCProtocol(irc.IRCClient):
             rest -- string: input from user
         """
 
+        logging.info("CMD: command_listtopics")
+
         rtn = self.factory.db.list_topics()
         self.cl.log_chan("seagl-bot", channel, rtn)
         return rtn
@@ -331,6 +341,9 @@ class IRCProtocol(irc.IRCClient):
 
 
     def command_teagl(self, nick, channel, rest):
+
+        logging.info("CMD: command_teagl")
+
         user_id = rest
         for c in [" ", "'", "\"", ";", "*",]:
             room_id = user_id.replace(c, "")
@@ -355,6 +368,8 @@ class IRCProtocol(irc.IRCClient):
             channel -- string: channel
             rest -- string: input from user
         """
+
+        logging.info("CMD: command_questions")
 
         try:
             config.botops.index(nick)
@@ -387,6 +402,8 @@ class IRCProtocol(irc.IRCClient):
             rest -- string: user input
         """
 
+        logging.info("CMD: command_ask")
+
         user_input = rest
         for c in ["'", "\"", ";", "*",]:
             user_input = user_input.replace(c, "")
@@ -414,6 +431,8 @@ class IRCProtocol(irc.IRCClient):
         """
         """
 
+        logging.info("CMD: command_clear_question_list")
+
         try:
             config.botops.index(nick)
         except Exception as e:
@@ -434,6 +453,8 @@ class IRCProtocol(irc.IRCClient):
             channel -- string: channel
             rest -- string: input from user
         """
+
+        logging.info("CMD: command_createroom")
 
         room_id = rest
         for c in [" ", "'", "\"", ";", "*",]:
@@ -470,6 +491,8 @@ class IRCProtocol(irc.IRCClient):
             rest -- string: input from user
         """
 
+        logging.info("CMD: command_listrooms")
+
         page_num = rest
         rtn = self.factory.db.list_rooms(page_num)
         self.cl.log_chan("seagl-bot", channel, rtn)
@@ -486,6 +509,8 @@ class IRCProtocol(irc.IRCClient):
             channel -- string: channel
             rest -- string: input from user
         """
+
+        logging.info("CMD: command_shuffle")
 
         if not nick in config.botops:
             return "Operation not permitted user."
@@ -509,6 +534,8 @@ class IRCProtocol(irc.IRCClient):
             channel -- string: channel
             rest -- string: arg string
         """
+
+        logging.info("CMD: command_timer")
 
         alarm_name = ''
 
@@ -542,10 +569,10 @@ class IRCProtocol(irc.IRCClient):
 
 
 
-    def command_names(self, nick, channel, rest):
-        "List the users in 'channel', usage: client.who('#testroom')"
-        #print("Calling for names: "+ channel)
-        self.sendLine("NAMES %s" % channel)
+    #def command_names(self, nick, channel, rest):
+    #    "List the users in 'channel', usage: client.who('#testroom')"
+    #    #print("Calling for names: "+ channel)
+    #    self.sendLine("NAMES %s" % channel)
 
 
     def query_names(self):
