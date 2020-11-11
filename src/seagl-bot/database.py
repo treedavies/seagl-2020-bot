@@ -605,7 +605,6 @@ class Database:
         logging.info(str(group_dict))
         for k in group_dict.keys():
             channel = "".join(["#seagl-", topic, "_", k])
-            #room = "".join(["https://meet.seagl.org/", topic, "_", k])
             room = "".join([config.JITSI_PREFIX, topic, "_", k])
             if not self.add_room('seagl-bot', room, channel):
                 logging.error("Error: shuffle_users() add_room" )
