@@ -36,6 +36,19 @@
   Attendees can only join lists that already exist.
   Example: !jt IloveLinux 
 
+* !shuffle - : Shuffles the users of a topic list, and distributes them into
+  equal sized lists, and create a channel/room for each list created.
+  Example: !shuffle <list-name> 5
+
+* !timer - Set an alarm timer. Required argument <minutes>
+  Example: !timer 2
+
+
+** NOTE regarding Announce Functions: IRC is not a high availbility service. If the bot is
+  is responding to large number of queries, it could be subject to throttling from the irc network.
+  Announcements are delivered every N (cofnig.broadcaster_interval) seconds and may be 
+  throttled during high traffic. It is a best practice to NOT send announcements often.
+
 * !admin_announce - !AA: Send Announcement to Admin channels defined in config.channels_admin list.
   The message is added to a message queue, where messages are read an sent out every N seconds.
   Example: !AA Free Beer!
@@ -48,10 +61,6 @@
   The message is added to a message queue, where messages are read an sent out.
   Example: !LA Ready for trivia?
 
-* !shuffle - : Shuffles the users of a topic list, and distributes them into
-  equal sized lists, and create a channel/room for each list created.
-  Example: !shuffle <list-name> 5
 
-* !timer - Set an alarm timer. Required argument <minutes>
-  Example: !timer 2
+
 
