@@ -250,6 +250,35 @@ class Database:
         return rtn
 
 
+    def get_assignment(self, nick, topic):
+        """
+        """
+
+        rtn = "No Assignment Found."
+        tbl = topic + "_shuffle"
+
+        #check if table exists
+
+        rows = ''
+        with self.connection:
+            query = "SELECT nick, irc_channel, jitsi_room FROM %s" % tbl
+            try:
+                cursor = self.connection.cursor()
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                if not len(rows) > 0:
+                    return "No data in list"
+            except Exception as e:
+                logging.error("get_room_list():'"+ query + "':" + str(e))
+            cursor.close()
+
+        for r in rows:
+            print(":".join([str(r[0]), nick]))
+            if str(r[0]) == str(nick):
+                rtn = "".join(["  Channel:", str(r[1]), "   Jitsi Room:" ,str(r[2]) ])
+        return rtn
+
+
     def get_room_list(self):
         """ Return list strings: list of room names """
         lst = []
@@ -376,7 +405,7 @@ class Database:
             logging.error("ERROR: get_channel_from_id():" + str(e))
         cursor.close()
         
-        logging.info("get_channel_row() Returning " + str(rtn))
+        #logging.info("get_channel_row() Returning " + str(rtn))
         return rtn
 
 
@@ -565,27 +594,82 @@ class Database:
         lst = list(filter(lambda x: x != "", lst))
         if len(lst) < 2:
             return "Error: Missing required args <topic-name> and <group-size>"
-
-        topic = lst[0] + '_list'
+       
+        topic = lst[0]
+        topic_table = lst[0] + '_list'
         group_size = lst[1]
         if not group_size.isdigit():
             return "Error: group-size is not an integer"
-        if not self.topic_exists(topic):
+        if not self.topic_exists(topic_table):
             return "Error: Topic not found."
+
+        rtnd = self.do_shuffle(topic, group_size)
+        if not self.create_shuffled_table(topic, rtnd):
+            logging.error("Error: shuffle_users(): womp womp.... ")
+        return (topic, rtnd)
+
+
+    def create_shuffled_table(self, topic, shuff_dict):
+        """
+        """
+
+        rtn = False
+        top_shuff_tbl = topic + "_shuffle" 
+
+        """ Wipe table if it exists"""
+        try:
+            cursor = self.connection.cursor()
+            query = "SELECT name FROM sqlite_master WHERE type='table' AND name=\'%s\';" % top_shuff_tbl
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            if len(rows) > 0:
+                query = "DELETE FROM %s" % top_shuff_tbl
+                cursor.execute(query)
+                self.connection.commit()
+            else:
+                query = """CREATE TABLE IF NOT EXISTS %s (
+                        id INTEGER PRIMARY KEY ASC, 
+                        nick TEXT, irc_channel TEXT, jitsi_room); """ % top_shuff_tbl
+                cursor.execute(query)
+        except Exception as e:
+            logging.error("ERROR: topic_exists():"+str(e))
+
+        try:
+            for group in shuff_dict:
+                user_list = shuff_dict[group]
+                for user in user_list:
+                    irc_chan = "".join(["#", topic, "_", group])
+                    jitsi_room = "".join([config.JITSI_PREFIX, topic, "_", group])
+                    query = "INSERT INTO %s (nick, irc_channel, jitsi_room) VALUES (?, ?, ?)" % top_shuff_tbl
+                    cursor.execute(query, (user, irc_chan, jitsi_room))
+                    self.connection.commit()
+                    rtn = True
+        except Exception as e:
+            logging.error("ERROR: topic_exists():"+str(e))
+        cursor.close()
+
+        return rtn  
+
+
+    def do_shuffle(self, topic, group_size):
+        """
+        """
+
+        topic_table = topic + "_list"
 
         # READ ALL USER IDS FROM TOPIC TABLE
         user_list = []
         try:
             cursor = self.connection.cursor()
-            cursor.execute("SELECT * FROM " + topic)
+            cursor.execute("SELECT * FROM " + topic_table)
             rows = cursor.fetchall()
             for row in rows:
                 user_list.append(str(row[1]))
         except Exception as e:
             logging.error("ERROR: shuffle_users(): "+str(e))
-            return "Error" + str(e)
+            return "do_shuffle(): Error" + str(e)
         cursor.close()
-
+        
         # RANDOMIZE sublists
         num_groups = int(len(user_list) / int(group_size))
         group_dict = {}
@@ -608,7 +692,8 @@ class Database:
             room = "".join([config.JITSI_PREFIX, topic, "_", k])
             if not self.add_room('seagl-bot', room, channel):
                 logging.error("Error: shuffle_users() add_room" )
-        return 
+        print("Returning "+ str(group_dict))
+        return group_dict 
 
 
     def topic_exists(self, topic_name):

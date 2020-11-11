@@ -269,6 +269,21 @@ class IRCProtocol(irc.IRCClient):
     command_LA = command_list_announce
 
 
+    def command_assignment(self, nick, channel, rest):
+        """
+        """
+
+        logging.info("CMD: command_assignment")
+        topic = rest
+        for c in [" ","'", "\"", ";", "*"]:
+            topic = topic.replace(c, "")
+
+        if topic == "":
+            return 'Error: No argument provided'
+
+        return self.factory.db.get_assignment(nick, topic)
+
+
     def command_jointopic(self, nick, channel, rest):
         """ Add user nick to topic list.
             Return: string
@@ -515,8 +530,10 @@ class IRCProtocol(irc.IRCClient):
         if not nick in config.botops:
             return "Operation not permitted user."
 
-        rtn = self.factory.db.shuffle_users(rest)
-        self.cl.log_chan("seagl-bot", channel, str(rtn))
+        sublist_dict = self.factory.db.shuffle_users(rest)
+        self.cl.log_chan("seagl-bot", channel, str(sublist_dict))
+        print(str(sublist_dict)) 
+
         return "done" 
     command_st = command_shuffle
 
@@ -590,7 +607,7 @@ class IRCProtocol(irc.IRCClient):
         channel = db.get_channel_row(row)
         if channel:
             self.last_chan_id = row 
-            logging.info("INFO: query_names():" + channel)
+            #logging.info("INFO: query_names():" + channel)
             self.sendLine("NAMES %s" % channel)
         else:
             self.last_chan_id = 1
