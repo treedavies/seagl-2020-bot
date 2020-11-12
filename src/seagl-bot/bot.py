@@ -126,7 +126,7 @@ class IRCProtocol(irc.IRCClient):
     def _sendMessage(self, msg, target, nick=None):
         if nick:
             msg = "%s, %s" % (nick, msg)
-        self.msg(target, msg)
+        self.msg(target, msg, length=100)
 
 
     def _showError(self, failure):
