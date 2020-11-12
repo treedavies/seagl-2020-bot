@@ -98,14 +98,6 @@ class Database:
         except Exception as e:
             logging.error("ERROR: create_db(): CHANNEL_USER_AUDIT " + str(e))
 
-        #try:
-        #    self.connection.execute(ROOMS_TABLE)
-        #    self.connection.execute(MSG_QUEUE_TABLE)
-        #    self.connection.execute(CHANNEL_USER_AUDIT)
-        #    self.connection.execute(CHANNEL_COUNTS_TABLE)
-        #except Exception as e:
-        #    logging.error("ERROR: create_db(): " + str(e))
-
 
     def question_table_count(self, qtable):
         """
@@ -304,7 +296,6 @@ class Database:
             cursor.close()
 
         for r in rows:
-            print(":".join([str(r[0]), nick]))
             if str(r[0]) == str(nick):
                 rtn = "".join(["  Channel:", str(r[1]), "   Jitsi Room:" ,str(r[2]) ])
         return rtn
