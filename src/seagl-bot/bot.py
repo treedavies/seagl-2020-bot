@@ -39,13 +39,13 @@ RANDOM_TOAST = {
 }
 
 HELP = """\n
-!schedule                       - Schedule for SeaGL 2020\n
-!createroom (!cr): <room-name>  - Create channel and conference chat room\n
-!listrooms (!lr): <page-number> - List Conference chat rooms\n
-!jointopic (!jt): <topic-name>  - Join topic list, receive invites and information\n
-!listtopics (!lt):              - List topics to join\n
-!teagl (!tea): <nick>           - Send a Teagl toast to a friend\n
-!ask:                           - Send Conference Speaker a question\n
+!schedule: - SeaGL Schedule
+!createroom (!cr): <room-name>  - Create channel + Conf-chat room
+!listrooms (!lr): <page-number> - List chat rooms
+!jointopic (!jt): <topic-name>  - Join topic/event list 
+!listtopics (!lt): - List topics 
+!tea <nick>: - TeaGL toast a friend
+!ask: - Ask Conference Speaker a question
 """
 
 class IRCProtocol(irc.IRCClient):
