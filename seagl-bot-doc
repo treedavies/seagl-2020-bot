@@ -40,6 +40,10 @@
   equal sized lists, and create a channel/room for each list created.
   Example: !shuffle <list-name> 5
 
+* !assignment - After !shuffle is called against a list, users can query the
+  bot to find out which channel and room they have been assigned to.
+  Example: !assignment <list-name>
+
 * !timer - Set an alarm timer. Required argument <minutes>
   Example: !timer 2
 
