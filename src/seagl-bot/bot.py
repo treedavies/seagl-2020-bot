@@ -20,6 +20,8 @@ from twisted.words.protocols import irc
 
 import database
 
+WELCOME_MSG = """Welcome to SeaGL Open Source Nerds!"""
+
 RANDOM_TOAST = {
     "0":"'A cup of tea is a cup of peace.' - Soshitsu Sen XV, Tea Life, Tea Mind",
     "1":"'Many kinds of monkeys have a strong taste for tea, coffee and spirituous liqueurs.' - Charles Darwin",
@@ -87,6 +89,8 @@ class IRCProtocol(irc.IRCClient):
     def userJoined(self, user, channel):
         nick, _, host = user.partition("!")
         self.cl.log_chan(nick, channel, "joined-channel")
+        db = database.Database(config.sqlite_path)
+        db.enqueue_msg(nick, WELCOME_MSG)
 
     def userLeft(self, user, channel):
         nick, _, host = user.partition("!")

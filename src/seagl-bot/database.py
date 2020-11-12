@@ -412,6 +412,24 @@ class Database:
         """
 
         rtn = False
+
+        # RETURN EARLY IF MESSAGE IS DUPLICATE
+        try:
+            cursor = self.connection.cursor()
+            qry = "SELECT destination, message from msg_queue"
+            cursor.execute(qry)
+            rows = cursor.fetchall()
+            for row in rows:
+                logging.info(str(row[0]),str(row[1]))
+                dest_cmpr = str(row[0])
+                msg_cmpr = str(row[1])
+                if (dest_cmpr == dest) and (msg_cmpr == msg):
+                    cursor.close()
+                    return rtn
+        except Exception as e:
+            logging.error("enqueue():" + qry + ":" + str(e))
+        cursor.close()
+
         try:
             cursor = self.connection.cursor()
             qry = "INSERT INTO msg_queue (destination, message) VALUES (?, ?)"
