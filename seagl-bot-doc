@@ -42,6 +42,8 @@
 
 * !assignment - After !shuffle is called against a list, users can query the
   bot to find out which channel and room they have been assigned to.
+  This is not really an Admin command, but is in the section because of its
+  niche purpose.
   Example: !assignment <list-name>
 
 * !timer - Set an alarm timer. Required argument <minutes>
