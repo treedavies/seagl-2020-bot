@@ -30,7 +30,7 @@ MSG_QUEUE_TABLE = """
 CHANNEL_COUNTS_TABLE = """
     CREATE TABLE IF NOT EXISTS channel_counts (
     id INTEGER PRIMARY KEY ASC,
-    Timestamp DATE DEFAULT (datetime('now','localtime'))
+    Timestamp DATE DEFAULT (datetime('now','localtime')),
     channel TEXT,
     count INTEGER,
     nicks TEXT
@@ -40,7 +40,7 @@ CHANNEL_COUNTS_TABLE = """
 CHANNEL_USER_AUDIT = """
     CREATE TABLE IF NOT EXISTS channel_user_audit (
     id INTEGER PRIMARY KEY ASC,
-    Timestamp DATE DEFAULT (datetime('now','localtime'))
+    Timestamp DATE DEFAULT (datetime('now','localtime')),
     channel TEXT,
     count INTEGER
     );
@@ -64,7 +64,6 @@ class Database:
             for ic in config.initial_channels:
                 chan = "#"+ic
                 room = config.JITSI_PREFIX + ic
-                #room = "https://meet.seagl.org/"+ic 
                 rtn = self.add_room("seagl-bot", room, chan)
 
             logging.info("Adding config.channels_admin to DB")
@@ -78,14 +77,34 @@ class Database:
     def create_db(self):
         """
         """
+        try:
+           self.connection.execute(ROOMS_TABLE)
+        except Exception as e:
+            logging.error("ERROR: create_db(): ROOMS_TABLE " + str(e))
 
         try:
-            self.connection.execute(ROOMS_TABLE)
             self.connection.execute(MSG_QUEUE_TABLE)
+        except Exception as e:
+            logging.error("ERROR: create_db(): MSG_QUEUE_TABLE " + str(e))
+
+        try:
             self.connection.execute(CHANNEL_USER_AUDIT)
+        except Exception as e:
+            logging.error("ERROR: create_db(): CHANNEL_USER_AUDIT" + str(e))
+
+    
+        try:
             self.connection.execute(CHANNEL_COUNTS_TABLE)
         except Exception as e:
-            logging.error(str(e))
+            logging.error("ERROR: create_db(): CHANNEL_USER_AUDIT " + str(e))
+
+        #try:
+        #    self.connection.execute(ROOMS_TABLE)
+        #    self.connection.execute(MSG_QUEUE_TABLE)
+        #    self.connection.execute(CHANNEL_USER_AUDIT)
+        #    self.connection.execute(CHANNEL_COUNTS_TABLE)
+        #except Exception as e:
+        #    logging.error("ERROR: create_db(): " + str(e))
 
 
     def question_table_count(self, qtable):
@@ -257,7 +276,19 @@ class Database:
         rtn = "No Assignment Found."
         tbl = topic + "_shuffle"
 
-        #check if table exists
+        """ Check if table exists """
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=\'" + tbl + "\';")
+            rows = cursor.fetchall()
+            if len(rows) < 1:
+                cursor.close()
+                return rtn
+        except Exception as e:
+            logging.error("ERROR: get_assignment(): "+str(e))
+            cursor.close()
+            return
+        cursor.close()
 
         rows = ''
         with self.connection:
@@ -638,7 +669,7 @@ class Database:
             for group in shuff_dict:
                 user_list = shuff_dict[group]
                 for user in user_list:
-                    irc_chan = "".join(["#", topic, "_", group])
+                    irc_chan = "".join(["#seagl-", topic, "_", group])
                     jitsi_room = "".join([config.JITSI_PREFIX, topic, "_", group])
                     query = "INSERT INTO %s (nick, irc_channel, jitsi_room) VALUES (?, ?, ?)" % top_shuff_tbl
                     cursor.execute(query, (user, irc_chan, jitsi_room))
