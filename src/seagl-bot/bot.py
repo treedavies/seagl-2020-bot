@@ -35,10 +35,10 @@ RANDOM_TOAST = {
 
 HELP = """\n
 !schedule: - SeaGL Schedule
-!createroom (!cr): <room-name>  - Create channel + Conf-chat room
+!createroom (!cr): <room-name> - Create channel + Conf-chat room
 !listrooms (!lr): <page-number> - List chat rooms
-!jointopic (!jt): <topic-name>  - Join topic/event list 
-!listtopics (!lt): - List topics 
+!jointopic (!jt): <topic-name> - Join topic/event list
+!listtopics (!lt): - List topics
 !tea <nick>: - TeaGL toast a friend
 !ask: - Ask Conference Speaker a question
 """
