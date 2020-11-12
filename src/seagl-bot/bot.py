@@ -302,8 +302,6 @@ class IRCProtocol(irc.IRCClient):
         if topic == "":
             return 'Error: No argument provided'
 
-        # CHECK CREATE_TOPIC POLICY
-
         self.factory.db.join_topic(nick, topic)
         rtn = "Adding "+ nick + " to list: " + topic
         self.cl.log_chan("seagl-bot", channel, rtn)

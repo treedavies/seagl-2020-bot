@@ -100,7 +100,9 @@ class Database:
 
 
     def question_table_count(self, qtable):
-        """
+        """ Retrun question count size
+
+            qtable -- string: 
         """
 
         rtn = 0
@@ -120,6 +122,8 @@ class Database:
 
     def clear_question_list(self, channel):
         """
+            Remove all questions
+            channel -- string:
         """
 
         rtn = False
@@ -178,6 +182,7 @@ class Database:
             question -- string:
             channel -- string: channel name
         """
+
         rtn = False
         qtable = 'questions_' + channel.replace('#','').replace('-','_')
 
@@ -249,6 +254,10 @@ class Database:
 
 
     def remove_rooms(self, room_lst):
+        """ Remove rooms from rooms table
+            room_lst -- list
+        """
+
         rtn = False
         cursor = self.connection.cursor()
         try:
@@ -262,7 +271,9 @@ class Database:
 
 
     def get_assignment(self, nick, topic):
-        """
+        """ Return assigned channel and room for nick.
+            nick -- string:
+            topic -- string
         """
 
         rtn = "No Assignment Found."
@@ -415,6 +426,9 @@ class Database:
 
 
     def get_channel_row(self, row):
+        """ Retrun row from rooms table
+            row -- : int?
+        """
         rtn = ""
         rid = int(row)-1
         try:
@@ -632,7 +646,9 @@ class Database:
 
 
     def create_shuffled_table(self, topic, shuff_dict):
-        """
+        """ Create shuffled table for topic
+            topic -- : string
+            shuff_dict -- : dict
         """
 
         rtn = False
@@ -674,7 +690,9 @@ class Database:
 
 
     def do_shuffle(self, topic, group_size):
-        """
+        """ Shuffle users and add room to room list
+            topic -- : string
+            group_size -- : int
         """
 
         topic_table = topic + "_list"
@@ -783,8 +801,6 @@ class Database:
         
     def get_channel_count_metric(self):
         """ return a dict of channel counts data 
-
-            Keyword arguments:
         """
 
         rtn_dict = {}
@@ -877,5 +893,4 @@ class Database:
             logging.error("Error: audit_channels(): " + str(e))
         cursor.close()
         return rtn_lst        
-
 
