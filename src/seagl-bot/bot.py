@@ -21,12 +21,7 @@ from twisted.words.protocols import irc
 import database
 
 
-WELCOME_MSG = """Welcome to SeaGL 2020 where we will be reaching for _OSI Layer 8: Freeing 
-the People_! I am SeaGL's friendly IRC bot; here to help maximize your 
-conference experience. You can see a list of actions by typing `!help` here 
-or in any channel that I'm in. If you have need further assistance or have 
-any questions, please ask in the `helpdesk` channel by clicking on its name 
-or typing `/join #seagl-helpdesk`. Enjoy your time at SeaGL 2020!
+WELCOME_MSG = """Welcome to SeaGL 2020 where we will be reaching for _OSI Layer 8: Freeing the People_! I am SeaGL's friendly IRC bot, Patch; here to help maximize your conference experience. You can see a list of actions by typing `!help` here or in any channel that I'm in. If you need further assistance or have any questions, please ask in the `helpdesk` channel by clicking on its name or typing `/join #seagl-helpdesk`. Enjoy your time at SeaGL 2020!
 """
 
 RANDOM_TOAST = {
