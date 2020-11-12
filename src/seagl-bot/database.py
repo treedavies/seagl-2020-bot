@@ -420,7 +420,6 @@ class Database:
             cursor.execute(qry)
             rows = cursor.fetchall()
             for row in rows:
-                logging.info(str(row[0]),str(row[1]))
                 dest_cmpr = str(row[0])
                 msg_cmpr = str(row[1])
                 if (dest_cmpr == dest) and (msg_cmpr == msg):
