@@ -670,7 +670,7 @@ class Database:
                 user_list = shuff_dict[group]
                 for user in user_list:
                     irc_chan = "".join(["#seagl-", topic, "_", group])
-                    jitsi_room = "".join([config.JITSI_PREFIX, topic, "_", group])
+                    jitsi_room = "".join([config.JITSI_PREFIX, "seagl-", topic, "_", group])
                     query = "INSERT INTO %s (nick, irc_channel, jitsi_room) VALUES (?, ?, ?)" % top_shuff_tbl
                     cursor.execute(query, (user, irc_chan, jitsi_room))
                     self.connection.commit()
@@ -720,7 +720,7 @@ class Database:
         logging.info(str(group_dict))
         for k in group_dict.keys():
             channel = "".join(["#seagl-", topic, "_", k])
-            room = "".join([config.JITSI_PREFIX, topic, "_", k])
+            room = "".join([config.JITSI_PREFIX, "seagl-", topic, "_", k])
             if not self.add_room('seagl-bot', room, channel):
                 logging.error("Error: shuffle_users() add_room" )
         print("Returning "+ str(group_dict))
