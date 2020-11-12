@@ -70,7 +70,6 @@ class Database:
             for ca in config.channels_admin:
                 chan = "#"+ca
                 room = config.JITSI_PREFIX + ca
-                #room = "https://meet.seagl.org/"+ca
                 rtn = self.add_room("seagl-bot", room, chan)
 
 
@@ -732,7 +731,6 @@ class Database:
             room = "".join([config.JITSI_PREFIX, "seagl-", topic, "_", k])
             if not self.add_room('seagl-bot', room, channel):
                 logging.error("Error: shuffle_users() add_room" )
-        print("Returning "+ str(group_dict))
         return group_dict 
 
 
