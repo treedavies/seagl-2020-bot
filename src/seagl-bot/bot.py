@@ -658,6 +658,12 @@ class IRCProtocol(irc.IRCClient):
 
         db = database.Database(config.sqlite_path)
         metric_dict = db.get_channel_count_metric()
+
+        for chan in config.channels_admin:
+            admin_chan = '#' + chan
+            if admin_chan in metric_dict.keys():
+                metric_dict.pop(admin_chan)
+
         with open(config.metric_path, 'w') as fp:
             json.dump(metric_dict, fp)
         return 
