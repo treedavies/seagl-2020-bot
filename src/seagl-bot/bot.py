@@ -92,7 +92,8 @@ class IRCProtocol(irc.IRCClient):
         nick, _, host = user.partition("!")
         self.cl.log_chan(nick, channel, "joined-channel")
         db = database.Database(config.sqlite_path)
-        db.enqueue_msg(nick, WELCOME_MSG)
+        if db.store_user_login(nick):
+            db.enqueue_msg(nick, WELCOME_MSG)
 
     def userLeft(self, user, channel):
         nick, _, host = user.partition("!")

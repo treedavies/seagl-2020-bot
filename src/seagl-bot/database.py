@@ -46,6 +46,13 @@ CHANNEL_USER_AUDIT = """
     );
 """
 
+USER_LOGINS = """
+    CREATE TABLE IF NOT EXISTS attendee_nicks (
+    id INTEGER PRIMARY KEY ASC,
+    nick TEXT
+    );
+"""
+
 
 class Database:
     def __init__(self, sqlite_path):
@@ -91,9 +98,13 @@ class Database:
         except Exception as e:
             logging.error("ERROR: create_db(): CHANNEL_USER_AUDIT" + str(e))
 
-    
         try:
             self.connection.execute(CHANNEL_COUNTS_TABLE)
+        except Exception as e:
+            logging.error("ERROR: create_db(): CHANNEL_USER_AUDIT " + str(e))
+
+        try:
+            self.connection.execute(USER_LOGINS)
         except Exception as e:
             logging.error("ERROR: create_db(): CHANNEL_USER_AUDIT " + str(e))
 
@@ -204,6 +215,36 @@ class Database:
             logging.error("Error: add_question(): insert: " + str(e))
         cursor.close()
         return rtn
+
+
+    def store_user_login(self, nick):
+        """ Store/Record User nicks in attendee_nicks table
+            reutrn True if nick was stored
+            return False if already present
+
+            nick - : String of user nick
+        """
+        cursor = self.connection.cursor()
+        try:
+            query = "SELECT nick FROM attendee_nicks WHERE nick='%s'" % nick
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            if (len(rows)) > 0:
+                return False
+        except Exception as e:
+            logging.error("Exception: store_user_login() lookup:" + str(e))
+            cursor.close()
+            return False
+
+        try:
+            query = "INSERT INTO attendee_nicks (nick) VALUES (?)" 
+            cursor.execute(query,(nick,))
+            self.connection.commit()
+        except Exception as e:
+            logging.error("Exception:  store_user_login():" + str(e))
+        cursor.close()
+        return True
+
 
 
     def add_room(self, nick, room, channel):
