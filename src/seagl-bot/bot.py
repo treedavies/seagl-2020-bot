@@ -113,10 +113,10 @@ class IRCProtocol(irc.IRCClient):
             return
         deferred = defer.maybeDeferred(func, nick, channel, rest)
         deferred.addErrback(self._showError)
-        if channel == self.nickname:
-            deferred.addCallback(self._sendMessage, nick)
-        else:
-            deferred.addCallback(self._sendMessage, channel, nick)
+        #if channel == self.nickname:
+        deferred.addCallback(self._sendMessage, nick)
+        #else:
+        #deferred.addCallback(self._sendMessage, channel, nick)
 
 
     def _sendMessage(self, msg, target, nick=None):
