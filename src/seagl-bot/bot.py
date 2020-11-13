@@ -538,7 +538,7 @@ class IRCProtocol(irc.IRCClient):
         self.cl.log_chan("seagl-bot", channel, str(sublist_dict))
         print(str(sublist_dict)) 
 
-        return "done" 
+        return "Groups Channels created. Find out Attendee placement by running: `!assignment <topic-name>`"
     command_st = command_shuffle
 
 
