@@ -372,10 +372,9 @@ class IRCProtocol(irc.IRCClient):
             logging.error("Error: No argument provided "+ nick +" "+ channel+" "+rest)
             return 'Error: No argument provided'
 
-        db = database.Database(config.sqlite_path)
         msg = "".join([user_id, ', ', nick, ' sent you a toast: ', RANDOM_TOAST[str(random.randint(0,5))]])
-        db.enqueue_msg(channel, msg)
-        return "Message Queued."
+        self._sendMessage(msg, user_id, nick=None)
+        return "Tea Toast sent to %s." % user_id
     command_tea = command_teagl
 
 
