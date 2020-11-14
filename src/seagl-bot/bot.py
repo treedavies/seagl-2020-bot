@@ -372,7 +372,7 @@ class IRCProtocol(irc.IRCClient):
             return 'Error: No argument provided'
 
         msg = "".join([user_id, ', ', nick, ' sent you a toast: ', RANDOM_TOAST[str(random.randint(0,5))]])
-        self._sendMessage(msg, user_id, nick=None)
+        self._sendMessage(msg, channel, nick=None)
         return "Tea Toast sent to %s." % user_id
     command_tea = command_teagl
 
