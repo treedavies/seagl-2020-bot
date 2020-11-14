@@ -163,8 +163,7 @@ class IRCProtocol(irc.IRCClient):
 
     def command_schedule(self, nick, channel, rest):
         logging.info("CMD: command_schedule")
-        return "https://osem.seagl.org/conferences/seagl2020/schedule#2020-11-13"
-        #       https://osem.seagl.org/conferences/seagl2020/schedule#2020-11-14
+        return  "https://osem.seagl.org/conferences/seagl2020/schedule#2020-11-14"
     command_sched = command_schedule
 
 
