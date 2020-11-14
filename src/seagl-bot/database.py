@@ -404,7 +404,7 @@ class Database:
                 if num_rooms < start:
                     return ''
    
-                rtn = "Listing Page: " + str(page_num) + "/"+ str(num_pages) + " of room list" + " - IRC command: !lr " + str(page_num)
+                rtn = "Listing Page: " + str(page_num) + "/"+ str(num_pages) + " of room list" + " - Run Command: `!lr 2` for page 2, etc.."
                 for room in rooms[start:stop]:
                     rtn += "\n" + '{:<13} {:<13}'.format(str(room[0]), str(room[1]))
             except Exception as e:
