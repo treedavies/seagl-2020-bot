@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "seagl-bot"
+name = "blahblahblahbot"
 version = "1.0"
 description = "A twisted clone of an IRC quotebot"
-authors = ["Tree Davies" <tdavies@darkphysics.net>, "David Ripton <dripton>", "Chris Rose <offbyone>"]
+authors = ["David Ripton <dripton>", "Chris Rose <offbyone>"]
 
 [tool.poetry.dependencies]
 python = "3.8+"
