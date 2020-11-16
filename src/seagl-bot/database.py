@@ -81,8 +81,9 @@ class Database:
 
 
     def create_db(self):
+        """ Create DB Tables
         """
-        """
+
         try:
            self.connection.execute(ROOMS_TABLE)
         except Exception as e:
@@ -354,6 +355,7 @@ class Database:
 
     def get_room_list(self):
         """ Return list strings: list of room names """
+
         lst = []
         with self.connection:
             query = "SELECT irc_channel FROM rooms"
@@ -378,6 +380,7 @@ class Database:
             Keyword arguments:
             page_num -- string:  
         """
+
         rtn = ""
         LINES_PER_PAGE = 4
 
@@ -486,6 +489,7 @@ class Database:
         """ Retrun row from rooms table
             row -- : int?
         """
+
         rtn = ""
         rid = int(row)-1
         try:
@@ -538,7 +542,6 @@ class Database:
             logging.error("ERROR: msg_queue_size(): " + qry + ":" + str(e))
         cursor.close()
         return int(rtn)
-
         
 
     def msg_queue_size(self):
@@ -558,7 +561,6 @@ class Database:
             logging.error("msg_queue_size:" + qry + ":" + str(e))
         cursor.close()
         return str(rtn)
-
 
 
     def join_topic(self, nick, lst):
@@ -630,6 +632,7 @@ class Database:
 
     def list_topics(self):
         """ Return string of topics """
+
         rtn = ""
         lst = []
         cursor = self.connection.cursor()
@@ -798,6 +801,7 @@ class Database:
             Keyword arguments:
             topic_name -- string 
         """
+
         rtn = False
         try:
             cursor = self.connection.cursor()
@@ -839,6 +843,7 @@ class Database:
             count -- string
             nicklist -- list
         """
+
         count = str(len(nicklist))
         nicks = ",".join(nicklist)
         rtn = False
